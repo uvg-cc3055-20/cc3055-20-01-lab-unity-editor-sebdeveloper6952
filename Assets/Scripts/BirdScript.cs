@@ -8,6 +8,7 @@ public class BirdScript : MonoBehaviour
     public float forwardSpeed = 2f;
     public GameObject cam;
     public float posXFinal = 53f;
+    public GameObject bloodEffect;
 
     private Rigidbody2D rb;
     private bool dead;
@@ -42,6 +43,16 @@ public class BirdScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         dead = true;
+        Instantiate(bloodEffect, transform.position, bloodEffect.transform.rotation);
+        gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            collision.gameObject.SetActive(false);
+        }
     }
 
     private void RevisarSiLlegoAlFinal()
