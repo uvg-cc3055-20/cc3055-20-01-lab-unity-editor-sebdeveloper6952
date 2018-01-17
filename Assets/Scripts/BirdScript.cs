@@ -9,14 +9,17 @@ public class BirdScript : MonoBehaviour
     public GameObject cam;
     public float posXFinal = 53f;
     public GameObject bloodEffect;
+    public Sprite deadSprite;
 
     private Rigidbody2D rb;
+    private AudioSource audio;
     private bool dead;
 
     private void Start()
     {
         // obtener componente rigidbody2D
         rb = GetComponent<Rigidbody2D>();
+        audio = GetComponent<AudioSource>();
         dead = false;
     }
 
@@ -42,9 +45,7 @@ public class BirdScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        dead = true;
-        Instantiate(bloodEffect, transform.position, bloodEffect.transform.rotation);
-        gameObject.SetActive(false);
+        Morir();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -58,6 +59,14 @@ public class BirdScript : MonoBehaviour
     private void RevisarSiLlegoAlFinal()
     {
         if (transform.position.x >= posXFinal)
-            dead = true;
+            Morir();
+    }
+
+    private void Morir()
+    {
+        dead = true;
+        //GetComponent<SpriteRenderer>().sprite = deadSprite;
+        Instantiate(bloodEffect, transform.position, bloodEffect.transform.rotation);
+        audio.Play();
     }
 }
